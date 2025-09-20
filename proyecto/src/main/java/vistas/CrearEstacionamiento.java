@@ -1,0 +1,398 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+package vistas;
+
+import clasesjava.Estacionamiento;
+import clasesjava.EstacionamientoDAO;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
+import javax.swing.JOptionPane;
+
+
+public class CrearEstacionamiento extends javax.swing.JFrame {
+    private boolean modoEdicion;
+    private Estacionamiento estacionamientoExistente;
+
+    /**
+     * Creates new form InformacionC
+     */
+    public CrearEstacionamiento( ) {
+        initComponents();
+        configurarInterfazCreacion();
+        this.modoEdicion = false;
+    }
+    
+
+    public CrearEstacionamiento(Estacionamiento estacionamiento) {
+        initComponents();
+        configurarInterfazEdicion();
+        this.modoEdicion = true;
+        this.estacionamientoExistente = estacionamiento;
+        cargarDatosEstacionamiento();
+    }
+
+    private void configurarInterfazCreacion() {
+        btnAcceder.setText("Crear");
+        this.setTitle("Crear Nuevo Estacionamiento");
+    }
+
+    private void configurarInterfazEdicion() {
+        btnAcceder.setText("Actualizar");
+        this.setTitle("Editar Estacionamiento");
+    }
+
+    private void cargarDatosEstacionamiento() {
+        if (estacionamientoExistente != null) {
+            txtNombre.setText(estacionamientoExistente.getNombre());
+            txtUbicacion.setText(estacionamientoExistente.getUbicacion());
+            txthora_apertura.setText(estacionamientoExistente.getHoraApertura().toString());
+            txthora_cierre.setText(estacionamientoExistente.getHoraCierre().toString());
+        }
+    }
+
+    private boolean validarCampos() {
+        if (txtNombre.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El nombre es obligatorio", "Error", JOptionPane.ERROR_MESSAGE);
+            txtNombre.requestFocus();
+            return false;
+        }
+        
+        if (txtUbicacion.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "La ubicación es obligatoria", "Error", JOptionPane.ERROR_MESSAGE);
+            txtUbicacion.requestFocus();
+            return false;
+        }
+        
+        try {
+            LocalTime.parse(txthora_apertura.getText());
+        } catch (DateTimeParseException e) {
+            JOptionPane.showMessageDialog(this, "Formato de hora de apertura inválido. Use HH:MM:SS", "Error", JOptionPane.ERROR_MESSAGE);
+            txthora_apertura.requestFocus();
+            return false;
+        }
+        
+        try {
+            LocalTime.parse(txthora_cierre.getText());
+        } catch (DateTimeParseException e) {
+            JOptionPane.showMessageDialog(this, "Formato de hora de cierre inválido. Use HH:MM:SS", "Error", JOptionPane.ERROR_MESSAGE);
+            txthora_cierre.requestFocus();
+            return false;
+        }
+        
+        return true;
+    }
+
+    private void crearEstacionamiento() {
+        if (!validarCampos()) return;
+        
+        try {
+            Estacionamiento nuevoEst = new Estacionamiento(
+                0, 
+                txtNombre.getText().trim(),
+                txtUbicacion.getText().trim(),
+                LocalTime.parse(txthora_apertura.getText()),
+                LocalTime.parse(txthora_cierre.getText())
+            );
+            
+            if (EstacionamientoDAO.insertarEstacionamiento(nuevoEst)) {
+                JOptionPane.showMessageDialog(this, "Estacionamiento creado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al crear el estacionamiento", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void actualizarEstacionamiento() {
+        if (!validarCampos()) return;
+        
+        try {
+            estacionamientoExistente.setNombre(txtNombre.getText().trim());
+            estacionamientoExistente.setUbicacion(txtUbicacion.getText().trim());
+            estacionamientoExistente.setHoraApertura(LocalTime.parse(txthora_apertura.getText()));
+            estacionamientoExistente.setHoraCierre(LocalTime.parse(txthora_cierre.getText()));
+            
+            if (EstacionamientoDAO.actualizarEstacionamiento(estacionamientoExistente)) {
+                JOptionPane.showMessageDialog(this, "Estacionamiento actualizado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al actualizar el estacionamiento", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel6 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        txtNombre = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtUbicacion = new javax.swing.JTextField();
+        txthora_cierre = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        btnAcceder = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        txthora_apertura = new javax.swing.JTextField();
+        btnSRC = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel6.setBackground(new java.awt.Color(184, 224, 233));
+
+        jPanel2.setBackground(new java.awt.Color(240, 249, 251));
+
+        jLabel1.setFont(new java.awt.Font("Bernard MT Condensed", 0, 50)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(44, 116, 142));
+        jLabel1.setText("Estacionamiento ");
+
+        jLabel3.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setText("Nombre(s):");
+
+        txtNombre.setBackground(new java.awt.Color(185, 196, 203));
+        txtNombre.setForeground(new java.awt.Color(44, 116, 142));
+        txtNombre.setBorder(null);
+        txtNombre.setSelectedTextColor(new java.awt.Color(44, 116, 142));
+        txtNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel4.setText("Ubicacion");
+
+        txtUbicacion.setBackground(new java.awt.Color(185, 196, 203));
+        txtUbicacion.setForeground(new java.awt.Color(44, 116, 142));
+        txtUbicacion.setBorder(null);
+        txtUbicacion.setSelectedTextColor(new java.awt.Color(44, 116, 142));
+        txtUbicacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUbicacionActionPerformed(evt);
+            }
+        });
+
+        txthora_cierre.setBackground(new java.awt.Color(185, 196, 203));
+        txthora_cierre.setForeground(new java.awt.Color(44, 116, 142));
+        txthora_cierre.setBorder(null);
+        txthora_cierre.setSelectedTextColor(new java.awt.Color(44, 116, 142));
+        txthora_cierre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txthora_cierreActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel5.setText("hora_cierre");
+
+        btnAcceder.setBackground(new java.awt.Color(44, 116, 142));
+        btnAcceder.setFont(new java.awt.Font("Bernard MT Condensed", 0, 18)); // NOI18N
+        btnAcceder.setForeground(new java.awt.Color(255, 255, 255));
+        btnAcceder.setText("Confirmar");
+        btnAcceder.setBorder(null);
+        btnAcceder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAccederActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel8.setText("hora_apertura");
+
+        txthora_apertura.setBackground(new java.awt.Color(185, 196, 203));
+        txthora_apertura.setForeground(new java.awt.Color(44, 116, 142));
+        txthora_apertura.setBorder(null);
+        txthora_apertura.setSelectedTextColor(new java.awt.Color(44, 116, 142));
+        txthora_apertura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txthora_aperturaActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(131, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txthora_apertura)
+                    .addComponent(jLabel8)
+                    .addComponent(txthora_cierre)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtUbicacion)
+                    .addComponent(jLabel3)
+                    .addComponent(txtNombre)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE))
+                .addGap(129, 129, 129))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(216, 216, 216)
+                .addComponent(btnAcceder, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(61, 61, 61)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txthora_apertura, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txthora_cierre, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
+                .addComponent(btnAcceder, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(82, Short.MAX_VALUE))
+        );
+
+        btnSRC.setBackground(new java.awt.Color(44, 116, 142));
+        btnSRC.setBorder(null);
+        btnSRC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSRCActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap(181, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSRC)
+                .addContainerGap(182, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSRC)
+                .addContainerGap(25, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(jPanel6, java.awt.BorderLayout.CENTER);
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreActionPerformed
+
+    private void txtUbicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUbicacionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUbicacionActionPerformed
+
+    private void txthora_cierreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txthora_cierreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txthora_cierreActionPerformed
+
+    private void btnAccederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederActionPerformed
+         if (modoEdicion) {
+            actualizarEstacionamiento();
+        } else {
+            crearEstacionamiento();
+        }
+    
+    }//GEN-LAST:event_btnAccederActionPerformed
+
+    private void txthora_aperturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txthora_aperturaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txthora_aperturaActionPerformed
+
+    private void btnSRCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSRCActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btnSRCActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(CrearEstacionamiento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(CrearEstacionamiento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(CrearEstacionamiento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(CrearEstacionamiento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new CrearEstacionamiento().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAcceder;
+    private javax.swing.JButton btnSRC;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtUbicacion;
+    private javax.swing.JTextField txthora_apertura;
+    private javax.swing.JTextField txthora_cierre;
+    // End of variables declaration//GEN-END:variables
+}
