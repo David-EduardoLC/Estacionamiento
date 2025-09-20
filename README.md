@@ -56,10 +56,12 @@ Este sistema busca:
 ## 🗂 Diagramas
 
 ### 📌 Diagrama E-R
-![Diagrama ER](docs/diagrama_er.png)
+![Imagen de WhatsApp 2025-09-18 a las 17 42 35_a5f4a2e5](https://github.com/user-attachments/assets/f1f66158-0992-49f4-9980-8630a9dabef5)
+
 
 ### 📌 Diagrama UML
-![Diagrama UML](docs/diagrama_uml.png)
+![Imagen de WhatsApp 2025-09-18 a las 17 42 35_a88d007e](https://github.com/user-attachments/assets/24b12fe1-a631-4669-b0ac-50b199004d99)
+
 
 ---
 
